@@ -20,7 +20,8 @@ export const playerstatusCommand: Command = {
 
     const voice = ctx.player.voiceState;
     const embed = yellowEmbed()
-      .setTitle(`[PLAYER DIAGNOSTIC STATUS] Guild: ${ctx.guildId}`)
+      .setAuthor({ name: "Player Diagnostics" })
+      .setTitle(`Guild ${ctx.guildId}`)
       .addFields(
         { name: "Status", value: `\`${ctx.player.status}\``, inline: true },
         { name: "Voice Channel", value: `<#${ctx.player.voiceChannelId}>`, inline: true },

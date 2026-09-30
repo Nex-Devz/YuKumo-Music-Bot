@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "discord.js";
 import type { Command, CommandContext } from "../types.js";
 import { queueEmbed, warningEmbed } from "../../utils/embeds.js";
-import { buildPlayerComponents } from "../../components/playerComponents.js";
+import { buildQueueControls } from "../../components/playerComponents.js";
 
 export const queueCommand: Command = {
   name: "queue",
@@ -18,7 +18,7 @@ export const queueCommand: Command = {
 
     await ctx.reply({
       embeds: [queueEmbed(ctx.player, 1)],
-      components: buildPlayerComponents(ctx.player),
+      components: buildQueueControls(ctx.player, 1),
     });
   },
 };

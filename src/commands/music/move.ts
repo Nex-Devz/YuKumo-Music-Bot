@@ -8,6 +8,10 @@ export const moveCommand: Command = {
   description: "Move a track from one queue position to another",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [
+    { name: "from", type: "integer", required: true },
+    { name: "to", type: "integer", required: true },
+  ],
   slashData: new SlashCommandBuilder()
     .setName("move")
     .setDescription("Move a track from one queue position to another")
@@ -15,12 +19,12 @@ export const moveCommand: Command = {
     .addIntegerOption((o) => o.setName("to").setDescription("New position").setMinValue(1).setRequired(true)),
   execute: async (ctx: CommandContext) => {
     if (!ctx.player) return;
-    const from = Number(ctx.args[0]);
-    const to = Number(ctx.args[1]);
+    const from = ctx.opts.getInteger("from");
+    const to = ctx.opts.getInteger("to");
 
     if (
-      isNaN(from) ||
-      isNaN(to) ||
+      from === null ||
+      to === null ||
       from < 1 ||
       to < 1 ||
       from > ctx.player.queue.size ||
@@ -36,10 +40,7 @@ export const moveCommand: Command = {
       ctx.player.queue.enqueue(track, to - 1);
       await ctx.reply({
         embeds: [
-          successEmbed(
-            "TRACK MOVED",
-            `Moved **${track.info.title}** from position \`${from}\` to \`${to}\``
-          ),
+          successEmbed("Track moved", `Moved **${track.info.title}** from position \`${from}\` to \`${to}\`.`),
         ],
         components: buildPlayerComponents(ctx.player),
       });

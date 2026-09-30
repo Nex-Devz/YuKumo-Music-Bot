@@ -18,5 +18,22 @@ export const YELLOW_THEME = {
   ACCENT: 0xB8860B,
   LIGHT: 0xFFFF00,
   HEX: "#FFD700",
-  FOOTER_TEXT: "YELLOW MUSIC BOT | YUKUMO BUN FRAMEWORK",
+  FOOTER_TEXT: "Yukumo Music",
 };
+
+/**
+ * Semantic palette. Gold stays the brand colour for content (now playing,
+ * queue, info) while status feedback uses conventional colours so users can
+ * parse success / failure at a glance.
+ */
+export const COLORS = {
+  PRIMARY: 0xFFD700, // brand gold — content embeds
+  SUCCESS: 0x57F287, // green
+  ERROR: 0xED4245, // red
+  WARNING: 0xFEE75C, // amber
+  INFO: 0x5865F2, // blurple
+  NEUTRAL: 0x2B2D31, // dark surface
+} as const;
+
+/** Per-user command cooldown in milliseconds (0 disables). */
+export const DEFAULT_COOLDOWN_MS = 2000;

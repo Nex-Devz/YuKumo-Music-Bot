@@ -8,6 +8,7 @@ export const volumeCommand: Command = {
   description: "Set playback volume (0 - 1000)",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [{ name: "level", type: "integer", required: true }],
   slashData: new SlashCommandBuilder()
     .setName("volume")
     .setDescription("Set playback volume (0 - 1000)")
@@ -16,15 +17,15 @@ export const volumeCommand: Command = {
     ),
   execute: async (ctx: CommandContext) => {
     if (!ctx.player) return;
-    const level = Number(ctx.args[0]);
-    if (isNaN(level) || level < 0 || level > 1000) {
+    const level = ctx.opts.getInteger("level");
+    if (level === null || level < 0 || level > 1000) {
       await ctx.reply({ embeds: [errorEmbed("Please specify a volume level between 0 and 1000.")] });
       return;
     }
 
     await ctx.player.setVolume(level);
     await ctx.reply({
-      embeds: [successEmbed("VOLUME UPDATED", `Playback volume set to **${level}%**`)],
+      embeds: [successEmbed("Volume updated", `Playback volume set to **${level}%**.`)],
       components: buildPlayerComponents(ctx.player),
     });
   },

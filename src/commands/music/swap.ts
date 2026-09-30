@@ -7,6 +7,10 @@ export const swapCommand: Command = {
   description: "Swap positions of two tracks in the queue",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [
+    { name: "track1", type: "integer", required: true },
+    { name: "track2", type: "integer", required: true },
+  ],
   slashData: new SlashCommandBuilder()
     .setName("swap")
     .setDescription("Swap two tracks in the queue by position number")
@@ -23,16 +27,8 @@ export const swapCommand: Command = {
       return;
     }
 
-    let pos1 = 0;
-    let pos2 = 0;
-
-    if (ctx.interaction) {
-      pos1 = ctx.interaction.options.getInteger("track1", true) - 1;
-      pos2 = ctx.interaction.options.getInteger("track2", true) - 1;
-    } else if (ctx.args.length >= 2) {
-      pos1 = parseInt(ctx.args[0], 10) - 1;
-      pos2 = parseInt(ctx.args[1], 10) - 1;
-    }
+    const pos1 = (ctx.opts.getInteger("track1") ?? 0) - 1;
+    const pos2 = (ctx.opts.getInteger("track2") ?? 0) - 1;
 
     const success = player.queue.swap(pos1, pos2);
     if (!success) {
@@ -41,7 +37,7 @@ export const swapCommand: Command = {
     }
 
     await ctx.reply({
-      embeds: [successEmbed("Queue Updated", `Swapped track #${pos1 + 1} and #${pos2 + 1}.`)],
+      embeds: [successEmbed("Queue updated", `Swapped track #${pos1 + 1} and #${pos2 + 1}.`)],
     });
   },
 };

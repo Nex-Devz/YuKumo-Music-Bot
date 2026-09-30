@@ -7,6 +7,7 @@ export const stayCommand: Command = {
   description: "Toggle 24/7 mode so bot remains in voice channel",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [{ name: "enable", type: "boolean", required: false }],
   slashData: new SlashCommandBuilder()
     .setName("stay")
     .setDescription("Toggle 24/7 mode (stay in voice channel when queue ends)")
@@ -19,12 +20,12 @@ export const stayCommand: Command = {
       await ctx.reply({ embeds: [errorEmbed("No active player found.")] });
       return;
     }
-    const enableOpt = ctx.interaction ? ctx.interaction.options.getBoolean("enable") : null;
+    const enableOpt = ctx.opts.getBoolean("enable");
     const newState = enableOpt !== null ? enableOpt : !player.stayInVc;
     player.setStayInVc(newState);
 
     await ctx.reply({
-      embeds: [successEmbed("24/7 Mode", `24/7 Voice Channel Mode has been ${newState ? "ENABLED" : "DISABLED"}.`)],
+      embeds: [successEmbed("24/7 mode", `24/7 mode is now **${newState ? "on" : "off"}**.`)],
     });
   },
 };

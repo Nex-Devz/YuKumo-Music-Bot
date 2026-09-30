@@ -8,6 +8,7 @@ export const loopCommand: Command = {
   description: "Set repeat mode",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [{ name: "mode", type: "string", required: true, choices: ["none", "track", "queue"] }],
   slashData: new SlashCommandBuilder()
     .setName("loop")
     .setDescription("Set repeat mode")
@@ -24,14 +25,14 @@ export const loopCommand: Command = {
     ),
   execute: async (ctx: CommandContext) => {
     if (!ctx.player) return;
-    const mode = ctx.args[0]?.toLowerCase();
+    const mode = ctx.opts.getString("mode")?.toLowerCase() ?? "";
     if (!["none", "track", "queue"].includes(mode)) {
-      await ctx.reply({ embeds: [errorEmbed("Valid loop modes: `none`, `track`, `queue`")] });
+      await ctx.reply({ embeds: [errorEmbed("Valid loop modes: `none`, `track`, `queue`.")] });
       return;
     }
-    ctx.player.setLoop(mode as any);
+    ctx.player.setLoop(mode as never);
     await ctx.reply({
-      embeds: [successEmbed("LOOP MODE UPDATED", `Repeat mode set to **${mode.toUpperCase()}**`)],
+      embeds: [successEmbed("Loop mode updated", `Repeat mode set to **${mode}**.`)],
       components: buildPlayerComponents(ctx.player),
     });
   },

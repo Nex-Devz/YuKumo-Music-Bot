@@ -7,6 +7,7 @@ export const skiptoCommand: Command = {
   description: "Jump directly to a specific track position in queue",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [{ name: "position", type: "integer", required: true }],
   slashData: new SlashCommandBuilder()
     .setName("skipto")
     .setDescription("Jump directly to a track position in queue")
@@ -20,13 +21,7 @@ export const skiptoCommand: Command = {
       return;
     }
 
-    let pos = 0;
-    if (ctx.interaction) {
-      pos = ctx.interaction.options.getInteger("position", true) - 1;
-    } else if (ctx.args.length >= 1) {
-      pos = parseInt(ctx.args[0], 10) - 1;
-    }
-
+    const pos = (ctx.opts.getInteger("position") ?? 0) - 1;
     const target = player.queue.skipTo(pos);
 
     if (!target) {
@@ -37,7 +32,7 @@ export const skiptoCommand: Command = {
     await player.playTrack(target);
 
     await ctx.reply({
-      embeds: [successEmbed("Skipped", `Jumped to track #${pos + 1}: **${target.info.title}**`)],
+      embeds: [successEmbed("Skipped", `Jumped to track #${pos + 1}: **${target.info.title}**.`)],
     });
   },
 };

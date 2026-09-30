@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Lavalink server (binaries, config with passwords, logs, plugins)
+Lavalink/
+*.jar
+
+# Persistent runtime data (queue/session snapshots)
+.data/
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code local session data
+.claude/

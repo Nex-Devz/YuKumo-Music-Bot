@@ -30,6 +30,7 @@ import { stayCommand } from "./music/stay.js";
 import { lyricsCommand } from "./music/lyrics.js";
 import { swapCommand } from "./music/swap.js";
 import { skiptoCommand } from "./music/skipto.js";
+import { searchCommand } from "./music/search.js";
 
 export const commands = new Collection<string, Command>();
 export const commandAliases = new Map<string, string>();
@@ -65,6 +66,7 @@ const commandList: Command[] = [
   lyricsCommand,
   swapCommand,
   skiptoCommand,
+  searchCommand,
 ];
 
 for (const cmd of commandList) {

@@ -18,28 +18,29 @@ export const nodeinfoCommand: Command = {
 
     const stats = node.stats;
     const embed = yellowEmbed()
-      .setTitle(`[LAVALINK NODE DIAGNOSTIC] ${node.id}`)
+      .setAuthor({ name: "Node Diagnostics" })
+      .setTitle(node.id)
       .addFields(
-        { name: "Node State", value: `\`${node.state}\``, inline: true },
-        { name: "Active Players", value: `\`${node.playerCount}\``, inline: true },
+        { name: "State", value: `\`${node.state}\``, inline: true },
+        { name: "Players", value: `\`${node.playerCount}\``, inline: true },
         { name: "Penalties", value: `\`${node.penalties.total}\``, inline: true },
         {
-          name: "Memory Usage",
+          name: "Memory",
           value: stats
-            ? `\`${Math.round(stats.memory.used / 1024 / 1024)}MB / ${Math.round(stats.memory.allocated / 1024 / 1024)}MB\``
+            ? `\`${Math.round((stats.memory?.used ?? 0) / 1024 / 1024)}MB / ${Math.round((stats.memory?.allocated ?? 0) / 1024 / 1024)}MB\``
             : "`N/A`",
           inline: true,
         },
         {
-          name: "CPU Load",
+          name: "CPU",
           value: stats
-            ? `\`Lavalink: ${(stats.cpu.lavalinkLoad * 100).toFixed(1)}% | System: ${(stats.cpu.systemLoad * 100).toFixed(1)}%\``
+            ? `\`Lavalink ${((stats.cpu?.lavalinkLoad ?? 0) * 100).toFixed(1)}% · System ${((stats.cpu?.systemLoad ?? 0) * 100).toFixed(1)}%\``
             : "`N/A`",
           inline: true,
         },
         {
           name: "Uptime",
-          value: stats ? `\`${Math.floor(stats.uptime / 1000)}s\`` : "`N/A`",
+          value: stats ? `\`${Math.floor((stats.uptime ?? 0) / 1000)}s\`` : "`N/A`",
           inline: true,
         }
       );

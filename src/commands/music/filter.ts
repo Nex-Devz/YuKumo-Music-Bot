@@ -9,6 +9,17 @@ export const filterCommand: Command = {
   description: "Apply an audio filter preset",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [
+    {
+      name: "preset",
+      type: "string",
+      required: true,
+      choices: [
+        "clear", "reset", "bassboost", "nightcore", "vaporwave", "slowedreverb",
+        "vocalboost", "karaoke", "3d", "rotation", "tremolo", "vibrato", "lowpass",
+      ],
+    },
+  ],
   slashData: new SlashCommandBuilder()
     .setName("filter")
     .setDescription("Apply an audio filter preset")
@@ -33,7 +44,7 @@ export const filterCommand: Command = {
     ),
   execute: async (ctx: CommandContext) => {
     if (!ctx.player) return;
-    const preset = ctx.args[0]?.toLowerCase();
+    const preset = ctx.opts.getString("preset")?.toLowerCase();
 
     switch (preset) {
       case "clear":

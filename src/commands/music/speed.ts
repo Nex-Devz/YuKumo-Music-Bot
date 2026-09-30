@@ -9,6 +9,7 @@ export const speedCommand: Command = {
   description: "Set timescale playback speed multiplier (e.g. 1.25)",
   requiresVoice: true,
   requiresPlayer: true,
+  options: [{ name: "value", type: "number", required: true }],
   slashData: new SlashCommandBuilder()
     .setName("speed")
     .setDescription("Set timescale playback speed multiplier (e.g. 1.25)")
@@ -17,15 +18,15 @@ export const speedCommand: Command = {
     ),
   execute: async (ctx: CommandContext) => {
     if (!ctx.player) return;
-    const speedVal = Number(ctx.args[0]);
-    if (isNaN(speedVal) || speedVal < 0.5 || speedVal > 3.0) {
+    const speedVal = ctx.opts.getNumber("value");
+    if (speedVal === null || speedVal < 0.5 || speedVal > 3.0) {
       await ctx.reply({ embeds: [errorEmbed("Speed multiplier must be between 0.5 and 3.0.")] });
       return;
     }
     ctx.player.filters.add(new TimescaleFilter({ speed: speedVal }));
     await ctx.player.setFilters();
     await ctx.reply({
-      embeds: [successEmbed("SPEED UPDATED", `Playback speed set to **${speedVal}x**`)],
+      embeds: [successEmbed("Speed updated", `Playback speed set to **${speedVal}x**.`)],
       components: buildPlayerComponents(ctx.player),
     });
   },
